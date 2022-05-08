@@ -40,6 +40,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         min: 10,
         max: 50
+    },
+    city: {
+        type: String
+    },
+    country: {
+        type: String
     }
 },
 {timestamps: true}

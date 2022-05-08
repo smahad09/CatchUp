@@ -23,15 +23,6 @@ app.use(morgan());
 app.use('/users', userRoute);
 app.use("/auth", authRoute);
 
-app.get("/", (request,response)=> {
-    response.send('Homepage');
-})
-
-app.get("/login", (request,response)=> {
-    response.send('Login Page')
-})
-
-
 app.listen(8800, ()=>{
     console.log("Server Started")
 })

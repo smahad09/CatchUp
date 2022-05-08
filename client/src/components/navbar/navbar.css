@@ -77,7 +77,9 @@
     position: relative;
 }
 
-
+.navbarIcons:visited {
+    color: white;
+}
 
 .navbarImage>img {
     width: 45px;

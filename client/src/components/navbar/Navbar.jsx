@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import {Search, Person} from '@mui/icons-material'
 import './navbar.css'
 
@@ -7,7 +8,7 @@ class Navbar extends Component {
         return (
             <div className='navbar'>
                 <div className="navbarLeft">
-                    <span className="logo">MRM Social</span>
+                    <span className="logo">CatchUp</span>
                 </div>
                 <div className="navbarCenter">
                     <div className="searchBar">
@@ -19,7 +20,7 @@ class Navbar extends Component {
                     <div className="navbarLinks">
                         {/* <span className="navbarLink">Profile</span> */}
                         <div className="navbarIcons">
-                            <Person />
+                            <Link to={"/profile"}><Person /></Link>
                         </div>
                     </div>
                     <div className="navbarImage">

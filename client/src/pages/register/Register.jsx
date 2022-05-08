@@ -1,12 +1,12 @@
 import React from 'react';
-import './login.css'
+import './register.css'
 
 const Login = () => {
     return (
         <div className='login'>
             <div className="loginWrapper">
                 <div className="loginLeft">
-                    <h3 className="loginLogo">MRM</h3>
+                    <h3 className="loginLogo">CatchUp</h3>
                     <span className="loginDesc">
                         Message friends for free!
                     </span>
