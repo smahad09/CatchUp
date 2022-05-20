@@ -2,24 +2,52 @@ const router = require('express').Router();
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
 
-router.put("/:id", async(request,response)=> {
-    if (request.body.userId == request.params.id || request.body.isAdmin) {
+
+router.get("/", async(request,response)=> {
+    const userId = request.query.userId;
+    const username = request.query.username;
+    try {
+        const user = userId? await User.findById(request.userId) : await User.findOne({username:username})
+        const {password, updatedAt, ...other} = user._doc;
+        response.status(200).json(other);
+    } catch(err) {return response.status(500).json(err); }
+})
+
+router.post("/register", async(request,response)=> {
+    const user = new User(request.body)
+    user.password = await bcrypt.hash(user.password,12);
+    await user.save();
+    response.status(200).json(user);
+})
+
+router.put('/:id',async (request,response)=> {
+    if (request.body.userId == request.params.id) {
         if (request.body.password) {
             try {
-                const salt = bcrypt.genSalt(12);
-                request.body.password = await bcrypt.hash(request.body.password);
-            } catch(err) { response.send(err) }
+                request.body.password = await bcrypt.hash(request.body.password,10);
+            } catch(err) { return response.status(500).json("this error"); }
         }
         try {
             const user = await User.findByIdAndUpdate(request.params.id, {
-                $set: request.body
+                $set: request.body,
             });
-            response.send("Account updated");
-        } catch(err) { response.send(err) }
+            response.status(200).json("Account Updated");
+        } catch(err) { return response.status(500).json("that error"); }
     } else {
-        response.send("Not owner of this account")
+        return response.status(403).json("Not Owner");
     }
-});
+})
+
+router.put('/:username',(request,response)=> {
+    const temp = User.findOne({});
+    console.log(temp)
+    if (temp._id == request.params.id) {
+        response.status(200).json('User found')
+    } else {
+        response.send(temp)
+    }
+})
+
 
 router.delete("/:id", async(request,response)=> {
     if (request.body.userId == request.params.id || request.body.isAdmin) {
@@ -28,7 +56,7 @@ router.delete("/:id", async(request,response)=> {
             response.send("Account Deleted");
         } catch(err) { response.send(err) }
     } else {
-        response.send("Not owner of this account")
+        response.status(2000).json("user deleted")
     }
 });
 

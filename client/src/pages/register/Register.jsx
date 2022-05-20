@@ -14,10 +14,10 @@ const Login = () => {
                 <div className="loginRight">
                     <div className="loginBox">
                         <input type="text" placeholder="Email" className="loginInput" />
+                        <input type="text" placeholder="Username" className="loginInput" /> 
                         <input placeholder="Password" className='loginInput' />
-                        <button className='loginButton'>Login</button>
-                        <button className='loginForgot'>Forgot</button>
-                        <button className='loginRegister'>Create A New Account</button>
+                        <input placeholder="Re-type Password" className='loginInput' />
+                        <button className='loginButton'>Register</button>
                     </div>                    
                 </div>
             </div>

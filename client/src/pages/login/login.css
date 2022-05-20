@@ -37,7 +37,7 @@
 .loginBox {
     height: 300px;
     padding: 20px;
-    background-color: white;
+    background-color: #8dbafe;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

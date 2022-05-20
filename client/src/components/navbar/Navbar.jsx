@@ -8,7 +8,9 @@ class Navbar extends Component {
         return (
             <div className='navbar'>
                 <div className="navbarLeft">
-                    <span className="logo">CatchUp</span>
+                    <Link to='/' style={{textDecoration: 'none'}}>
+                        <span className="logo">CatchUp</span>
+                    </Link>
                 </div>
                 <div className="navbarCenter">
                     <div className="searchBar">
@@ -20,7 +22,7 @@ class Navbar extends Component {
                     <div className="navbarLinks">
                         {/* <span className="navbarLink">Profile</span> */}
                         <div className="navbarIcons">
-                            <Link to={"/profile"}><Person /></Link>
+                            <Link to={"/profile/:username"} style={{textDecoration: 'none'}}><Person /></Link>
                         </div>
                     </div>
                     <div className="navbarImage">
