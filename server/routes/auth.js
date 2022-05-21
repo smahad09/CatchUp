@@ -28,7 +28,7 @@ router.post("/login", async (request,response)=> {
         const validPW = await bcrypt.compare(user.password,findUser.password);
         validPW? flag=true : flag=false
     }
-    flag? response.send(findUser):response.send("Invalid email or PW"); 
+    flag? response.status(200).json(findUser):response.status(404).json("Invalid"); 
 });
 
 module.exports = router

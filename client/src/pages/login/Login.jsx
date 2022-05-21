@@ -1,12 +1,18 @@
-import {React, useState} from 'react';
+import {React, useContext, useRef} from 'react';
 import './login.css'
+import { LoginCall } from '../../apiCalls';
+import { AuthContext } from '../../context/authContext';
+import {CircularProgress} from '@mui/material';
 
 const Login = () => {
-    const [head, setHead] = useState(['hello']);
 
-    function changeHeading () {
-        const newHead = 'I clicked the fucking button';
-        setHead(newHead);
+    const email = useRef();
+    const password = useRef();
+    const {user, isFetching, error, dispatch} = useContext(AuthContext);
+
+    const handleSubmit = (e)=> {
+        e.preventDefault();
+        LoginCall({email: email.current.value ,password: password.current.value}, dispatch)
     }
 
     return (
@@ -19,13 +25,13 @@ const Login = () => {
                     </span>
                 </div>
                 <div className="loginRight">
-                    <div className="loginBox">
-                        <input type="text" placeholder="Email" className="loginInput" />
-                        <input placeholder="Password" className='loginInput' />
-                        <button className='loginButton' onClick={changeHeading}>Login</button>
+                    <form className="loginBox" onSubmit={handleSubmit}>
+                        <input type="email" placeholder="Email" className="loginInput" ref={email} required />
+                        <input placeholder="Password" type="password" className='loginInput' ref={password}  required/>
+                        <button className='loginButton'>{isFetching? <CircularProgress color="inherit"/>:"Login"}</button>
                         <button className='loginForgot'>Forgot</button>
                         <button className='loginRegister'>Create A New Account</button>
-                    </div>                    
+                    </form>                    
                 </div>
             </div>
         </div>
