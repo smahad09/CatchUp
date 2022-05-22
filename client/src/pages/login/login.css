@@ -79,7 +79,7 @@
 
 
 .loginRegister {
-    width: 60%;
+    width: 100%;
     align-self: center;
     height: 50px;
     border-radius: 10px;
@@ -89,4 +89,16 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+}
+
+
+.errorMessage {
+    width: 60%;
+    text-align: center;
+    align-self: center;
+    height: 25px;
+    color: whitesmoke;
+    background-color: #F54768;
+    margin: 10px;
+    border-radius: 5px;
 }

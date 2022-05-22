@@ -14,9 +14,9 @@ router.post("/register", async (request,response)=> {
         const hashedPW = await bcrypt.hash(newUser.password, salt);
         newUser.password = hashedPW;
         await newUser.save();
-        response.send(newUser);
+        response.status(200).json(newUser);
     } catch(err) {
-        response.send(error);
+        response.status(422).json("User Already Exists");
     }
 });
 
@@ -28,7 +28,7 @@ router.post("/login", async (request,response)=> {
         const validPW = await bcrypt.compare(user.password,findUser.password);
         validPW? flag=true : flag=false
     }
-    flag? response.status(200).json(findUser):response.status(404).json("Invalid"); 
+    flag? response.status(200).json(findUser):response.status(404).json("Invalid Username or Password"); 
 });
 
 module.exports = router

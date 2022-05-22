@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+import { AuthContext } from '../../context/authContext';
 import {useNavigate} from 'react-router-dom'
 import './register.css'
 
 const Login = () => {
+    const [error, setError] = useState();
     const email = useRef();
     const password = useRef();
     const rePassword = useRef();
@@ -23,9 +25,11 @@ const Login = () => {
             try {
                 await axios.post('http://localhost:3001/auth/register', user);
                 navigate('/login');
-            } catch(err) { console.log(err); }
+            } catch(err) { setError(err) }
         }
     }
+
+    
 
     return (
         <div className='login'>
@@ -38,10 +42,11 @@ const Login = () => {
                 </div>
                 <div className="loginRight">
                     <form className="loginBox" onSubmit={handleSubmit}>
+                    {error? <div className='errorMessage'>{error.response.data}</div>: ""}
                         <input type="email" placeholder="Email" required ref={email} className="loginInput" />
                         <input type="text" placeholder="Username" required ref={username} className="loginInput" /> 
-                        <input placeholder="Password" type='password' required ref={password} className='loginInput' />
-                        <input placeholder="Re-type Password" type='password' required ref={rePassword} className='loginInput' />
+                        <input placeholder="Password" type='password' minLength={6} required ref={password} className='loginInput' />
+                        <input placeholder="Re-type Password" type='password' minLength={6} required ref={rePassword} className='loginInput' />
                         <button className='loginButton' type='submit'>Register</button>
                     </form>                    
                 </div>

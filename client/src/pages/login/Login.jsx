@@ -3,6 +3,7 @@ import './login.css'
 import { LoginCall } from '../../apiCalls';
 import { AuthContext } from '../../context/authContext';
 import {CircularProgress} from '@mui/material';
+import {Link} from 'react-router-dom';
 
 const Login = () => {
 
@@ -25,12 +26,14 @@ const Login = () => {
                     </span>
                 </div>
                 <div className="loginRight">
+                    {error? <div className='errorMessage'>{error.response.data}</div>: ""}
                     <form className="loginBox" onSubmit={handleSubmit}>
                         <input type="email" placeholder="Email" className="loginInput" ref={email} required />
                         <input placeholder="Password" type="password" className='loginInput' ref={password}  required/>
                         <button className='loginButton'>{isFetching? <CircularProgress color="inherit"/>:"Login"}</button>
-                        <button className='loginForgot'>Forgot</button>
-                        <button className='loginRegister'>Create A New Account</button>
+                        <Link to={'/register'} style={{textDecoration: 'none'}} className="loginRegister">
+                            <button className='loginRegister'>Create A New Account</button>
+                        </Link>                        
                     </form>                    
                 </div>
             </div>

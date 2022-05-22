@@ -25,13 +25,15 @@ const Navbar = ()=> {
             <div className="navbarRight">
                 <div className="navbarLinks">
                     {/* <span className="navbarLink">Profile</span> */}
-                    <div className="navbarIcons">
+                    {/* <div className="navbarIcons">
                         <Link to={"/profile/:username"} style={{textDecoration: 'none'}}><Person /></Link>
+                    </div> */}
+                </div>
+                <Link to={`/users/${user.username}`}>
+                    <div className="navbarImage">
+                        <img src={user.profilePicture || "/assets/noPP.png"} alt="" />
                     </div>
-                </div>
-                <div className="navbarImage">
-                    <img src={user.profilePicture || "/assets/noPP.png"} alt="" />
-                </div>
+                </Link>
             </div>
             
         </div>

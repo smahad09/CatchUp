@@ -1,15 +1,19 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import './profile.css'
 import Navbar from "../../components/navbar/Navbar"
 import ChatMenu from '../../components/chatMenu/ChatMenu';
 import axios from 'axios';
 import {useParams} from 'react-router';
+import { AuthContext } from '../../context/authContext';
+import AddIcon from '@mui/icons-material/Add';
 
 
 const Profile = ()=> {
+    const {user:currentUser, dispatch} = useContext(AuthContext)
     const [userData,setuserData] = useState({});
     const [followers,setFollowers] = useState([]);
     const [followings,setFollowings] = useState([]);
+    const [followed,setFollowed] = useState(currentUser.followings.includes(userData._id));
     const username = useParams().username
 
     useEffect(()=> {
@@ -20,6 +24,26 @@ const Profile = ()=> {
             setFollowings(response.data.followings);
         }; fetchUser();
     }, [username]); 
+
+
+    useEffect(()=> {
+        setFollowed(currentUser.followings.includes(userData._id))
+    }, [currentUser, userData._id])
+
+    const followHandler = async()=> {
+        try {
+            if (followed) {
+                await axios.put('http://localhost:3001/users/'+userData._id+'/unfollow', {userId:currentUser._id});
+                dispatch({type:"UNFOLLOW", payload:userData._id})
+            } else {
+                await axios.put('http://localhost:3001/users/'+userData._id+'/follow', {userId:currentUser._id});
+                dispatch({type:"FOLLOW", payload:userData._id})
+            }
+        } catch(err) {console.log(err);}
+        setFollowed(!followed)
+    }
+
+    console.log(followed)
 
     return (
         <React.Fragment>
@@ -42,9 +66,11 @@ const Profile = ()=> {
                                      {followers.length} <span className='follow'>Followers </span>
                                      {followings.length} <span className="follow">Following</span>  
                                 </span>
-                            </div>
-                            <div className="followbutton">
-                                <button>Follow User</button>
+                                {username !== currentUser.username && (
+                                    <button className="followButton" onClick={followHandler}>
+                                        {currentUser.followings.includes(userData._id)? "Unfollow": "Follow"}
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

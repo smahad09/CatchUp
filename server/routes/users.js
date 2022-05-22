@@ -61,6 +61,8 @@ router.delete("/:id", async(request,response)=> {
 });
 
 router.put("/:id/follow", async(request,response)=> {
+    console.log(request.params.id);
+    console.log(request.body.userId);
     if (request.body.userId !== request.params.id) {
         try {
             const user = await User.findById(request.params.id);
@@ -69,7 +71,7 @@ router.put("/:id/follow", async(request,response)=> {
             if (!user.followers.includes(request.body.userId)) {
                 await user.updateOne({$push : {followers: request.body.userId}});
                 await currentUser.updateOne({$push: {followings: request.params.id}});
-                response.send("User Followed");
+                response.status(200).json("User Followed")
             } else {
                 response.send("Already Following");
             }
@@ -91,7 +93,7 @@ router.put("/:id/unfollow", async(request,response)=> {
             if (user.followers.includes(request.body.userId)) {
                 await user.updateOne({$pull : {followers: request.body.userId}});
                 await currentUser.updateOne({$pull: {followings: request.params.id}});
-                response.send("User Unfollowed");
+                response.status(200).json("User Unfollowed");
             } else {
                 response.send("Not Following Anyways");
             }
@@ -104,5 +106,24 @@ router.put("/:id/unfollow", async(request,response)=> {
     }
 });
 
+
+//get friends
+
+router.get("/friends/:userId", async (request,response)=> {
+    try {
+        const user = await User.findById(request.params.userId);
+        const friends = await Promise.all(
+            user.followings.map(friendId=> {
+                return User.findById(friendId)
+            })
+        )
+        let friendList = [];
+        friends.map(friend=> {
+            const {_id,username,profilePicture} = friend;
+            friendList.push({_id, username, profilePicture});
+        });
+        response.status(200).json(friendList);
+    } catch(err) {return response.status(500).json(err);}
+})
 
 module.exports = router 
