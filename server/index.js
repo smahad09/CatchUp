@@ -9,6 +9,8 @@ const cors = require('cors');
 
 const userRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
+const convoRoutes = require('./routes/conversation');
+const messageRoutes = require('./routes/message');
 
 dotenv.config()
 
@@ -29,6 +31,8 @@ app.use(morgan());
 
 app.use('/users', userRoute);
 app.use("/auth", authRoute);
+app.use('/conversation', convoRoutes)
+app.use('/message', messageRoutes);
 
 app.listen(3001, ()=>{
     console.log("Server Started")
