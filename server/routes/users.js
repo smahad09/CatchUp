@@ -7,7 +7,7 @@ router.get("/", async(request,response)=> {
     const userId = request.query.userId;
     const username = request.query.username;
     try {
-        const user = userId? await User.findById(request.userId) : await User.findOne({username:username})
+        const user = userId? await User.findById(userId) : await User.findOne({username:username})
         const {password, updatedAt, ...other} = user._doc;
         response.status(200).json(other);
     } catch(err) {return response.status(500).json(err); }

@@ -24,6 +24,16 @@ router.get("/:userId", async(request,response)=> {
         });
         response.status(200).json(conversation);
     } catch(err) {return response.status(500).json(err);}
+});
+
+
+router.get("/find/:userIda/:userIdb", async(request,response)=> {
+    try {
+        const conversation = await Conversation.findOne({
+            members: {$all: [request.params.userIda, request.params.userIdb]}
+        });
+        response.status(200).json(conversation);
+    } catch(err) {response.status(500).json(err);}
 })
 
 

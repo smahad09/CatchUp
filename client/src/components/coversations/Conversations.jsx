@@ -1,31 +1,29 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import './conversations.css'
+import axios from "axios";
+import { useEffect, useState } from "react";
+import "./conversations.css";
 
-const Conversations = ({conversation, currentUser}) => {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+export default function Conversations({ conversation, currentUser }) {
+  const [user, setUser] = useState(null);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-    const [user,setUser] = useState(null);
+  useEffect(() => {
+    const friendId = conversation.members.find((m) => m !== currentUser._id);
 
-    console.log(conversation)
+    const getUser = async () => {
+      try {
+        const res = await axios("http://localhost:3001/users?userId=" + friendId);
+        setUser(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+  }, [currentUser, conversation]);
 
-    // useEffect(()=>{
-    //     const friendId = conversation.members.find((m) => m!==currentUser._id);
-    //     const getUser = async()=> {
-    //         try {
-    //             const response = await axios('http://localhost:3001/users?userId='+friendId);
-    //             console.log(response);
-    //         } catch(err) {console.log(err)}
-    //     };
-    //     getUser();
-    // },[currentUser, conversation])
-
-    return (
-        <div className='conversation'>
-            <img className='convoImg' src="/assets/eren.jpg" alt="" />
-            <span className='convoName'>A Friend</span>
-        </div>
-    );
+  return (
+    <div className="conversation">
+      <img className="conversationImg" src={user?.profilePicture?  user.profilePicture: "/assets/noPP.png"} alt=""/>
+      <span className="conversationName">{user?.username}</span>
+    </div>
+  );
 }
-
-export default Conversations;
