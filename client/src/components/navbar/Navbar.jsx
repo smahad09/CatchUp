@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Navigate, Redirect, useNavigate} from 'react-router-dom';
 import {Search, Person} from '@mui/icons-material'
 import {useContext} from 'react';
 import { AuthContext } from '../../context/authContext';
 import './navbar.css'
 
+
+
 const Navbar = ()=> {
 
     const {user} = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    const handleLogout = ()=> {
+        localStorage.setItem("user", null);
+        // navigate("/");
+        window.location.reload();
+    };
 
     return (
         <div className='navbar'>
@@ -29,13 +38,15 @@ const Navbar = ()=> {
                         <Link to={"/profile/:username"} style={{textDecoration: 'none'}}><Person /></Link>
                     </div> */}
                 </div>
+                <div className="navbarLinks">
+                    <button onClick={handleLogout} className="logoutBtn">Logout</button>
+                </div>
                 <Link to={`/users/${user.username}`}>
                     <div className="navbarImage">
                         <img src={user.profilePicture || "/assets/noPP.png"} alt="" />
                     </div>
                 </Link>
-            </div>
-            
+            </div>            
         </div>
     );
 };

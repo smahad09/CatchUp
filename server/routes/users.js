@@ -21,7 +21,7 @@ router.post("/register", async(request,response)=> {
 })
 
 router.put('/:id',async (request,response)=> {
-    if (request.body.userId == request.params.id) {
+    if (request.body.userId === request.params.id) {
         if (request.body.password) {
             try {
                 request.body.password = await bcrypt.hash(request.body.password,10);
@@ -31,7 +31,7 @@ router.put('/:id',async (request,response)=> {
             const user = await User.findByIdAndUpdate(request.params.id, {
                 $set: request.body,
             });
-            response.status(200).json("Account Updated");
+            response.status(200).json(user);
         } catch(err) { return response.status(500).json("that error"); }
     } else {
         return response.status(403).json("Not Owner");

@@ -19,8 +19,6 @@ const ChatMenu = () => {
         getFriends();
     }, [user._id])
 
-    console.log(friends);
-
     return (
         <div className="messenger">
             
