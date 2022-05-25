@@ -18,6 +18,7 @@ const Navbar = ()=> {
         window.location.reload();
     };
 
+    //just adding to make a commit 
     return (
         <div className='navbar'>
             <div className="navbarLeft">
